@@ -695,7 +695,19 @@ function speedKmh(w){          /* 平路无风稳态：P·η = ½ρ·CdA·v³ + 
   return (lo+hi)/2*3.6;
 }
 function ftpFor(inp, dir){     /* dir: 'up' 关键段 / 'down' 总长 / 'mid' 参考 */
-  if(inp && inp.ftp > 0) return inp.ftp;
+  /* 判据是 hasPower，不是 ftp > 0。
+     表单在没勾「有功率计」时照样往 inp.ftp 塞 200（那是给功率区间显示兜的底），
+     于是 `ftp > 0` 恒成立，下面这套「FTP 未知」的兜底一次都没触发过——
+     没有功率计的人拿到的是按虚构的 200 瓦算出来的公里数，还当成他自己的数
+     呈现给他。两个方向都错，而且错在设计要避免的那一头：一节甜蜜点
+     2×15 分钟，关键段报 7.8 km，而偏强的骑手实际要骑 8.6 km——红灯正好
+     停在工作段上，这一组就废了。
+
+     不能改表单让它传 null：库里有 430 节课标着「无功率计可用」但同时带
+     requires_ftp 前置，hasFtp 一旦变 false 它们会被整批过滤掉，计划大变。
+     所以只在这里分流——ftpFor 只服务 roadKm / blockKm / totalKm 三个里程
+     函数，改它不碰前置条件，也不碰功率区间显示。 */
+  if(inp && inp.hasPower && inp.ftp > 0) return inp.ftp;
   return dir==='up'   ? SM.unknown_ftp_band_w[1]
        : dir==='down' ? SM.unknown_ftp_band_w[0] : SM.ref_ftp_w;
 }
