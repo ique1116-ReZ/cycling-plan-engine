@@ -4,10 +4,7 @@
 
 ## 在线试用
 
-| 页面 | 说明 |
-|---|---|
-| [排课工具](https://ique1116-rez.github.io/cycling-plan-engine/) | 填表 → 生成 12 周计划 |
-| [规则文档](https://ique1116-rez.github.io/cycling-plan-engine/rules.html) | 四层管线的完整规则、参数表、15 条自检 |
+**[打开排课工具](https://ique1116-rez.github.io/cycling-plan-engine/)** — 填表 → 生成 12 周计划
 
 ## 这次要验证什么
 
